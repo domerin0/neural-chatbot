@@ -32,7 +32,19 @@ The options for the above command are:
 | plot_histograms  |  boolean | plots histograms for  target and source sequences |
 | plot_scatter  | boolean  |  plot x-y scatter plot for target length vs. source length |
 
-in `train.py` you can then modify the bucket values accordingly. I do plan on making this an easier process,
+in `buckets.cfg` you can then modify the bucket values accordingly. You can add or remove buckets. All bucket values in the [buckets] subheading will be parsed in. Each line under [buckets] should be of the format:
+
+``bucket_name: source_length,target_length``
+
+In the same configuration file the data settings can also be changed under the [max_data_sizes] subheading. 
+
+|  Name | Type  | Description  |
+|:--------:|:--------:|:--------:|
+| num_lines  | int  | number of lines in conversation to go back  |
+| max_target_length  |  int | max length of target sequences |
+| max_source_length  | int  |  max length of source sequences |
+
+A configuration file was used because it was a mess trying to find out how to pass bucket values via command line. This seemed like a half-way decent solution. It also enables (in the future) `sequencelengthplotter.py` the ability to autonomously change these values without requiring any user input.
 
 #### Training Network
 
