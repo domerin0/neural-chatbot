@@ -7,7 +7,6 @@ This is the successor to my previous torch project 'seq2seq-chatbot'. Portions o
 
 This is based off the research in these papers: [Sutskever et al., 2014.](http://arxiv.org/abs/1409.3215) and [Vinyals & Le, 2015.](http://arxiv.org/pdf/1506.05869v1.pdf)
 
-This 
 ### Dependencies
 
 1. Python 2.7
@@ -72,7 +71,7 @@ After training loss and perplexity graphs can be seen:
 
 To have a real conversation with your bot you can begin an interactive prompt by doing:
 
-`python sample.py --checkpoint_dir"path/to/checkpointdirectory" --data_dir="path/to/datadirectory"`
+`$ python sample.py --checkpoint_dir"path/to/checkpointdirectory" --data_dir="path/to/datadirectory"`
 
 Summary of options below:
 
