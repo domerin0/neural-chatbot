@@ -15,6 +15,7 @@ import util.hyperparamutils as hyper_params
 import util.vocabutils as vocab_utils
 import util.dataprocessor as data_utils
 import models.chatbot
+import ConfigParser
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -30,30 +31,40 @@ flags.DEFINE_integer("num_layers", 5, "Number of layers in the model.")
 flags.DEFINE_integer("vocab_size", 40000, "Vocabulary size.")
 flags.DEFINE_integer("dropout", 0.5, "Probability of hidden inputs being removed between 0 and 1.")
 flags.DEFINE_string("data_dir", "data/", "Directory containing processed data.")
+flags.DEFINE_string("config_file", "buckets.cfg", "path to config file contraining bucket sizes")
 flags.DEFINE_string("raw_data_dir", "data/subtitles/", "Raw text data directory")
+##TODO add more than one tokenizer
 flags.DEFINE_string("tokenizer", "basic", "Choice of tokenizer, options are: basic, character")
 flags.DEFINE_string("checkpoint_dir", "data/checkpoints/", "Checkpoint dir")
 flags.DEFINE_integer("max_train_data_size", 0,
 	"Limit on the size of training data (0: no limit).")
 flags.DEFINE_integer("steps_per_checkpoint", 200,
 	"How many training steps to do per checkpoint.")
-flags.DEFINE_boolean("self_test", False,
-	"Run a self-test if this is set to True.")
-
 FLAGS = tf.app.flags.FLAGS
 #(10, 5), (50, 15), (100, 25),
-_buckets = [(10, 10), (50, 15), (100, 20), (200, 50)]
+
+_buckets = []
+#_buckets = [(10, 10), (50, 15), (100, 20), (200, 50)]
 
 def main():
-	if FLAGS.tokenizer == "character":
-		global _buckets
-		_buckets = [(140, 140), (350, 140), (700, 140), (1400, 140)]
+	config = ConfigParser.ConfigParser()
+	config.read(FLAGS.config_file)
+	global _buckets
+	_buckets = setBuckets(config.items("buckets"))
+	print "Using bucket sizes:"
+	print _buckets
+
+	max_num_lines = int(config.get("max_data_sizes", "num_lines"))
+	max_target_size = int(config.get("max_data_sizes", "max_target_length"))
+	max_source_size = int(config.get("max_data_sizes", "max_source_length"))
+
 	if not os.path.exists(FLAGS.checkpoint_dir):
 		os.mkdir(FLAGS.checkpoint_dir)
 	path = getCheckpointPath()
 	print "path is {0}".format(path)
 	data_processor = data_utils.DataProcessor(FLAGS.vocab_size,
-		FLAGS.raw_data_dir,FLAGS.data_dir, FLAGS.train_frac, FLAGS.tokenizer)
+		FLAGS.raw_data_dir,FLAGS.data_dir, FLAGS.train_frac, FLAGS.tokenizer,
+		max_num_lines, max_target_size, max_source_size)
 	data_processor.run()
 	#create model
 	print "Creating model with..."
@@ -169,6 +180,17 @@ def createModel(session, path, vocab_size):
 		print "Created model with fresh parameters."
 		session.run(tf.initialize_all_variables())
 	return model
+
+def setBuckets(raw_info):
+	buckets = []
+	try:
+		for tu in raw_info:
+			target, source = tu[1].strip().split(",")
+			buckets.append((int(target), int(source)))
+	except:
+		print "Erorr in config file formatting..."
+	return buckets
+
 
 def readData(source_path, target_path, max_size=None):
 	'''

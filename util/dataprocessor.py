@@ -22,19 +22,23 @@ from multiprocessing import Process, Lock
 
 class DataProcessor(object):
     def __init__(self, max_vocab_size, source_data_path,
-    processed_data_path, train_frac, tokenizer_str):
+    processed_data_path, train_frac, tokenizer_str,
+    num_lines=4, max_target_length=50, max_source_length=200):
         '''
+        Inputs:
+        max_vocab_size:
+        source_data_path,
+        processed_data_path:
+        train_frac:
+        tokenizer_str:
+        num_lines:
+        max_target_length:
+        max_source_length:
         '''
-        if tokenizer_str == "basic":
-            self.MAX_SOURCE_TOKEN_LENGTH = 200
-            self.MAX_TARGET_TOKEN_LENGTH = 50
-            self.NUM_LINES = 4
-            self.tokenizer = util.tokenizer.basic_tokenizer
-        if tokenizer_str == "character":
-            self.MAX_SOURCE_TOKEN_LENGTH = 1400
-            self.MAX_TARGET_TOKEN_LENGTH = 140
-            self.NUM_LINES = 2
-            self.tokenizer = util.tokenizer.character_tokenizer
+        self.MAX_SOURCE_TOKEN_LENGTH = max_source_length
+        self.MAX_TARGET_TOKEN_LENGTH = max_target_length
+        self.NUM_LINES = num_lines
+        self.tokenizer = util.tokenizer.basic_tokenizer
         assert train_frac > 0.0 and train_frac <= 1.0, "Train frac not between 0 and 1..."
         self.train_frac = train_frac
         self.max_vocab_size = max_vocab_size

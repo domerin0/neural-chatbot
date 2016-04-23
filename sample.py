@@ -20,7 +20,7 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_string('checkpoint_dir', 'data/checkpoints/1461170194hiddensize_200_dropout_0.8_numlayers_4', 'Directory to store/restore checkpoints')
 flags.DEFINE_string('data_dir', "data/", "Data storage directory")
-flags.DEFINE_string('text', 'Hello World!', 'Text to sample with.')
+#flags.DEFINE_string('text', 'Hello World!', 'Text to sample with.')
 
 def main():
 	with tf.Session() as sess:
