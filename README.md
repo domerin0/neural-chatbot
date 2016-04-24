@@ -83,7 +83,9 @@ After training loss and perplexity graphs can be seen:
 
 To have a real conversation with your bot you can begin an interactive prompt by doing:
 
-`$ python sample.py --checkpoint_dir"path/to/checkpointdirectory" --data_dir="path/to/datadirectory"`
+*Note the `sample.py` file does not currently read in bucket sizes set from the config file (this will be fixed shortly)
+
+`$ python sample.py --checkpoint_dir="path/to/checkpointdirectory" --data_dir="path/to/datadirectory"`
 
 Summary of options below:
 
@@ -95,10 +97,11 @@ Summary of options below:
 ### Results
 
 So far using a Titan X, after about 12 hours of training, it achieves a perplexity of ~30 on a 'relatively small' network. 
-Results with human test so far haven't been too great, I am trying to find the right set of parameters to get something 'ok', 
-that can be trained in 24 hours or less on my GPU. Reults will be added here when found.
+Results with human testing so far haven't been too great. I am trying to find the right set of parameters to get something 'ok', 
+that can be trained in 24 hours or less on my GPU. Results will be added here when found.
 
 ### Future Features
 
--Automatic bucket selection and making it easier to change bucket sizes
+-Automatic bucket selection <s>and making it easier to change bucket sizes</s>
+
 -Automatic download and preparation of an existing conversational dataset
