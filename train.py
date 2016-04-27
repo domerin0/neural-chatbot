@@ -41,18 +41,14 @@ flags.DEFINE_integer("max_train_data_size", 0,
 flags.DEFINE_integer("steps_per_checkpoint", 200,
 	"How many training steps to do per checkpoint.")
 FLAGS = tf.app.flags.FLAGS
-#(10, 5), (50, 15), (100, 25),
 
+#Buckets get read on from config file, and serialized with checkpoint for easy
+#restoration
 _buckets = []
-#_buckets = [(10, 10), (50, 15), (100, 20), (200, 50)]
+config = ConfigParser.ConfigParser()
 
 def main():
-	config = ConfigParser.ConfigParser()
 	config.read(FLAGS.config_file)
-	global _buckets
-	_buckets = setBuckets(config.items("buckets"))
-	print "Using bucket sizes:"
-	print _buckets
 
 	max_num_lines = int(config.get("max_data_sizes", "num_lines"))
 	max_target_size = int(config.get("max_data_sizes", "max_target_length"))
@@ -77,6 +73,8 @@ def main():
 	with tf.Session() as sess:
 		writer = tf.train.SummaryWriter("/tmp/tb_logs_chatbot", sess.graph_def)
 		model = createModel(sess, path, vocab_size)
+		print "Using bucket sizes:"
+		print _buckets
 		#train model and save to checkpoint
 		print "Beggining training..."
 		print "Maximum number of epochs to train for: {0}".format(FLAGS.max_epoch)
@@ -170,7 +168,7 @@ def createModel(session, path, vocab_size):
 	model = models.chatbot.ChatbotModel(vocab_size, _buckets,
 		FLAGS.hidden_size, FLAGS.dropout, FLAGS.num_layers, FLAGS.grad_clip,
 		FLAGS.batch_size, FLAGS.learning_rate, FLAGS.lr_decay_factor)
-	hyper_params.saveHyperParameters(path, FLAGS)
+	hyper_params.saveHyperParameters(path, FLAGS, _buckets)
 	print path
 	ckpt = tf.train.get_checkpoint_state(path)
 	if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
@@ -182,6 +180,12 @@ def createModel(session, path, vocab_size):
 	return model
 
 def setBuckets(raw_info):
+	'''
+	Deserializes python dictionary of buckets
+
+	Inputs
+	raw_info: is the serialized string of buckets
+	'''
 	buckets = []
 	try:
 		for tu in raw_info:
@@ -224,8 +228,15 @@ def getCheckpointPath():
 	path to checkpoint directory
 	'''
 	old_path = os.path.join(FLAGS.checkpoint_dir, "hyperparams.p")
+	global _buckets
 	if os.path.exists(old_path):
 		params = hyper_params.restoreHyperParams(FLAGS.checkpoint_dir)
+		num_buckets = params["num_buckets"]
+		buckets = []
+		for i in range(num_buckets):
+			buckets.append((params["bucket_{0}_target".format(i)],
+				params["bucket_{0}_target".format(i)]))
+		_buckets = buckets
 		ok = \
 		params["num_layers"] == FLAGS.num_layers and \
 		params["hidden_size"] == FLAGS.hidden_size and \
@@ -233,6 +244,8 @@ def getCheckpointPath():
 		if ok:
 			return FLAGS.checkpoint_dir
 		else:
+			_buckets = setBuckets(config.items("buckets"))
+			print _buckets
 			infostring = "hiddensize_{0}_dropout_{1}_numlayers_{2}".format(FLAGS.hidden_size,
 			FLAGS.dropout, FLAGS.num_layers)
 			if not os.path.exists("data/checkpoints/"):
@@ -243,6 +256,8 @@ def getCheckpointPath():
 			print "hyper parameters changed, training new model at {0}".format(path)
 			return path
 	else:
+		_buckets = setBuckets(config.items("buckets"))
+		print _buckets
 		return FLAGS.checkpoint_dir
 
 if __name__ == '__main__':
