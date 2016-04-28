@@ -14,7 +14,9 @@ from six.moves import xrange
 import models.chatbot
 import util.hyperparamutils as hyper_params
 import util.vocabutils as vocab_utils
-_buckets = [(10, 10), (50, 15), (100, 20), (200, 50)]
+
+_buckets = []
+#_buckets = [(10, 10), (50, 15), (100, 20), (200, 50)]
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
