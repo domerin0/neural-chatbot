@@ -24,7 +24,7 @@ flags.DEFINE_float("lr_decay_factor", 0.99, "Learning rate decays by this much."
 flags.DEFINE_float("grad_clip", 5.0, "Clip gradients to this norm.")
 flags.DEFINE_float("train_frac", 0.7, "Percentage of data to use for \
 	training (rest goes into test set)")
-flags.DEFINE_integer("batch_size", 64, "Batch size to use during training.")
+flags.DEFINE_integer("batch_size", 2, "Batch size to use during training.")
 flags.DEFINE_integer("max_epoch", 6, "Maximum number of times to go over training set")
 flags.DEFINE_integer("hidden_size", 100, "Size of each model layer.")
 flags.DEFINE_integer("num_layers", 1, "Number of layers in the model.")
