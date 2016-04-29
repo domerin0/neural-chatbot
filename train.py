@@ -27,14 +27,14 @@ flags.DEFINE_float("train_frac", 0.7, "Percentage of data to use for \
 flags.DEFINE_integer("batch_size", 64, "Batch size to use during training.")
 flags.DEFINE_integer("max_epoch", 6, "Maximum number of times to go over training set")
 flags.DEFINE_integer("hidden_size", 100, "Size of each model layer.")
-flags.DEFINE_integer("num_layers", 5, "Number of layers in the model.")
+flags.DEFINE_integer("num_layers", 1, "Number of layers in the model.")
 flags.DEFINE_integer("vocab_size", 40000, "Vocabulary size.")
 flags.DEFINE_integer("dropout", 0.5, "Probability of hidden inputs being removed between 0 and 1.")
 flags.DEFINE_string("data_dir", "data/", "Directory containing processed data.")
 flags.DEFINE_string("config_file", "buckets.cfg", "path to config file contraining bucket sizes")
-flags.DEFINE_string("raw_data_dir", "data/subtitles/", "Raw text data directory")
+flags.DEFINE_string("raw_data_dir", "data/cornell_lines/", "Raw text data directory")
 ##TODO add more than one tokenizer
-flags.DEFINE_string("tokenizer", "basic", "Choice of tokenizer, options are: basic, character")
+flags.DEFINE_string("tokenizer", "basic", "Choice of tokenizer, options are: basic (for now)")
 flags.DEFINE_string("checkpoint_dir", "data/checkpoints/", "Checkpoint dir")
 flags.DEFINE_integer("max_train_data_size", 0,
 	"Limit on the size of training data (0: no limit).")
@@ -71,7 +71,7 @@ def main():
 	vocab_size = vocab_mapper.getVocabSize()
 	print "Vocab size is: {0}".format(vocab_size)
 	with tf.Session() as sess:
-		writer = tf.train.SummaryWriter("/tmp/tb_logs_chatbot", sess.graph_def)
+		writer = tf.train.SummaryWriter("/tmp/tb_logs_chatbot", sess.graph)
 		model = createModel(sess, path, vocab_size)
 		print "Using bucket sizes:"
 		print _buckets

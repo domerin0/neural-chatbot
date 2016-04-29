@@ -15,16 +15,16 @@ class ChatbotModel(object):
 			   num_layers, max_gradient_norm, batch_size, learning_rate,
 			   lr_decay_factor, num_samples=512, forward_only=False):
 		'''
-		vocab_size:
-		buckets:
-		hidden_size:
-		num_layers:
-		max_gradient_norm:
-		batch_size:
-		learning_rate:
-		lr_decay_factor:
-		num_samples:
-		forward_only:
+		vocab_size: number of vocab tokens
+		buckets: buckets of max sequence lengths
+		hidden_size: dimension of hidden layers
+		num_layers: number of hidden layers
+		max_gradient_norm: maximum gradient magnitude
+		batch_size: number of training examples fed to network at once
+		learning_rate: starting learning rate of network 
+		lr_decay_factor: amount by which to decay learning rate
+		num_samples: number of samples for sampled softmax
+		forward_only: Whether to build backpass nodes or not
 		'''
 		self.vocab_size = vocab_size
 		self.buckets = buckets
@@ -66,7 +66,7 @@ class ChatbotModel(object):
 
 		def seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
 			return tf.nn.seq2seq.embedding_attention_seq2seq(
-				encoder_inputs, decoder_inputs, cell, vocab_size,
+				encoder_inputs, decoder_inputs, cell,hidden_size, vocab_size,
 				vocab_size, output_projection=output_projection,
 				feed_previous=do_decode)
 
