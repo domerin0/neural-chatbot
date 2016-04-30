@@ -70,6 +70,8 @@ def main():
 	vocab_mapper = vocab_utils.VocabMapper(FLAGS.data_dir)
 	vocab_size = vocab_mapper.getVocabSize()
 	print "Vocab size is: {0}".format(vocab_size)
+	FLAGS.vocab_size = vocab_size
+	print "vocab flag: {0}".format(FLAGS.vocab_size)
 	with tf.Session() as sess:
 		writer = tf.train.SummaryWriter("/tmp/tb_logs_chatbot", sess.graph)
 		model = createModel(sess, path, vocab_size)
