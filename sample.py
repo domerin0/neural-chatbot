@@ -20,13 +20,14 @@ _buckets = []
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
-flags.DEFINE_string('checkpoint_dir', 'data/checkpoints/1461170194hiddensize_200_dropout_0.8_numlayers_4', 'Directory to store/restore checkpoints')
+flags.DEFINE_string('checkpoint_dir', 'data/checkpoints/1461979205hiddensize_100_dropout_0.5_numlayers_1', 'Directory to store/restore checkpoints')
 flags.DEFINE_string('data_dir', "data/", "Data storage directory")
 #flags.DEFINE_string('text', 'Hello World!', 'Text to sample with.')
 
 def main():
 	with tf.Session() as sess:
 		model = loadModel(sess, FLAGS.checkpoint_dir)
+		print _buckets
 		model.batch_size = 1
 		vocab = vocab_utils.VocabMapper(FLAGS.data_dir)
 		sys.stdout.write(">")
@@ -34,8 +35,8 @@ def main():
 		sentence = sys.stdin.readline()
 		conversation_history = [sentence]
 		while sentence:
-			#token_ids = list(reversed(vocab.tokens2Indices(" ".join(conversation_history))))
-			token_ids = list(reversed(vocab.tokens2Indices(sentence)))
+			token_ids = list(reversed(vocab.tokens2Indices(" ".join(conversation_history))))
+			#token_ids = list(reversed(vocab.tokens2Indices(sentence)))
 			bucket_id = min([b for b in xrange(len(_buckets))
 				if _buckets[b][0] > len(token_ids)])
 
@@ -53,9 +54,9 @@ def main():
 
 			convo_output =  " ".join(vocab.indices2Tokens(outputs))
 
-			#conversation_history.append(convo_output)
-			#if len(conversation_history) >= 1:
-			#	conversation_history.pop(0)
+			conversation_history.append(convo_output)
+			if len(conversation_history) >= 1:
+				conversation_history.pop(0)
 			print convo_output
 			sys.stdout.write(">")
 			sys.stdout.flush()
@@ -63,7 +64,14 @@ def main():
 
 
 def loadModel(session, path):
+	global _buckets
 	params = hyper_params.restoreHyperParams(path)
+	buckets = []
+	num_buckets = params["num_buckets"]
+	for i in range(num_buckets):
+		buckets.append((params["bucket_{0}_target".format(i)],
+			params["bucket_{0}_target".format(i)]))
+		_buckets = buckets
 	model = models.chatbot.ChatbotModel(params["vocab_size"], _buckets,
 		params["hidden_size"], 1.0, params["num_layers"], params["grad_clip"],
 		1, params["learning_rate"], params["lr_decay_factor"], 512, True)
