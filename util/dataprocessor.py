@@ -127,8 +127,7 @@ class DataProcessor(object):
             else:
                 self.parseTextFile(text_file, is_train)
 
-    def parseDiscreteTextFile(self, text_files, is_train):
-        for text_file in text_files[0]:
+    def parseDiscreteTextFile(self, text_file, is_train):
             with open(text_file, "r+") as f:
                 sentences = f.read().split("\n")
                 #make sure even number of senteces to pair off
