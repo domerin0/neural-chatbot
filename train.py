@@ -32,7 +32,7 @@ flags.DEFINE_integer("vocab_size", 40000, "Vocabulary size.")
 flags.DEFINE_integer("dropout", 0.5, "Probability of hidden inputs being removed between 0 and 1.")
 flags.DEFINE_string("data_dir", "data/", "Directory containing processed data.")
 flags.DEFINE_string("config_file", "buckets.cfg", "path to config file contraining bucket sizes")
-flags.DEFINE_string("raw_data_dir", "data/faq/", "Raw text data directory")
+flags.DEFINE_string("raw_data_dir", "data/cornell_lines/", "Raw text data directory")
 ##TODO add more than one tokenizer
 flags.DEFINE_string("tokenizer", "basic", "Choice of tokenizer, options are: basic (for now)")
 flags.DEFINE_string("checkpoint_dir", "data/checkpoints/", "Checkpoint dir")
@@ -61,7 +61,7 @@ def main():
 	print "path is {0}".format(path)
 	data_processor = data_utils.DataProcessor(FLAGS.vocab_size,
 		FLAGS.raw_data_dir,FLAGS.data_dir, FLAGS.train_frac, FLAGS.tokenizer,
-		max_num_lines, max_target_size, max_source_size)
+		max_num_lines, max_target_size, max_source_size, FLAGS.is_discrete)
 	data_processor.run()
 	#create model
 	print "Creating model with..."
