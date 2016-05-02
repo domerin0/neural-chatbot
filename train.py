@@ -24,7 +24,7 @@ flags.DEFINE_float("lr_decay_factor", 0.99, "Learning rate decays by this much."
 flags.DEFINE_float("grad_clip", 5.0, "Clip gradients to this norm.")
 flags.DEFINE_float("train_frac", 0.7, "Percentage of data to use for \
 	training (rest goes into test set)")
-flags.DEFINE_integer("batch_size", 2, "Batch size to use during training.")
+flags.DEFINE_integer("batch_size", 16, "Batch size to use during training.")
 flags.DEFINE_integer("max_epoch", 6, "Maximum number of times to go over training set")
 flags.DEFINE_integer("hidden_size", 100, "Size of each model layer.")
 flags.DEFINE_integer("num_layers", 1, "Number of layers in the model.")
@@ -40,6 +40,7 @@ flags.DEFINE_integer("max_train_data_size", 0,
 	"Limit on the size of training data (0: no limit).")
 flags.DEFINE_integer("steps_per_checkpoint", 200,
 	"How many training steps to do per checkpoint.")
+flags.DEFINE_boolean("is_discrete", False, "Lets the data processor know if your data is discrete. (else it is treated as continuous)")
 FLAGS = tf.app.flags.FLAGS
 
 #Buckets get read on from config file, and serialized with checkpoint for easy
@@ -60,7 +61,7 @@ def main():
 	print "path is {0}".format(path)
 	data_processor = data_utils.DataProcessor(FLAGS.vocab_size,
 		FLAGS.raw_data_dir,FLAGS.data_dir, FLAGS.train_frac, FLAGS.tokenizer,
-		max_num_lines, max_target_size, max_source_size)
+		max_num_lines, max_target_size, max_source_size, FLAGS.is_discrete)
 	data_processor.run()
 	#create model
 	print "Creating model with..."
@@ -71,7 +72,6 @@ def main():
 	vocab_size = vocab_mapper.getVocabSize()
 	print "Vocab size is: {0}".format(vocab_size)
 	FLAGS.vocab_size = vocab_size
-	print "vocab flag: {0}".format(FLAGS.vocab_size)
 	with tf.Session() as sess:
 		writer = tf.train.SummaryWriter("/tmp/tb_logs_chatbot", sess.graph)
 		model = createModel(sess, path, vocab_size)
