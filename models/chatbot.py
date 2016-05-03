@@ -40,7 +40,7 @@ class ChatbotModel(object):
 		output_projection = None
 		softmax_loss_function = None
 		if num_samples > self.vocab_size:
-			num_samples = self.vocab_size -1 
+			num_samples = self.vocab_size -1
 		if num_samples > 0 and num_samples < self.vocab_size:
 			with tf.device("/cpu:0"):
 				w = tf.get_variable("proj_w", [hidden_size, self.vocab_size])
@@ -66,10 +66,16 @@ class ChatbotModel(object):
 				cell = rnn_cell.MultiRNNCell([cell] * num_layers)
 
 		def seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
-			return tf.nn.seq2seq.embedding_attention_seq2seq(
-				encoder_inputs, decoder_inputs, cell, vocab_size,
-				vocab_size,hidden_size, output_projection=output_projection,
-				feed_previous=do_decode)
+			if tf.__version__.startswith("0.8"):
+				return tf.nn.seq2seq.embedding_attention_seq2seq(
+					encoder_inputs, decoder_inputs, cell, vocab_size,
+					vocab_size,hidden_size, output_projection=output_projection,
+					feed_previous=do_decode)
+			else:
+				return tf.nn.seq2seq.embedding_attention_seq2seq(
+					encoder_inputs, decoder_inputs, cell, vocab_size,
+					vocab_size, output_projection=output_projection,
+					feed_previous=do_decode)
 
 		# Feeds for inputs.
 		self.encoder_inputs = []
