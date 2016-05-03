@@ -96,15 +96,13 @@ class DataProcessor(object):
             vocab_builder.createVocabFile()
 
         if not self.data_files_exist:
-            print "num_train_files: {0}".format(num_train_files)
             self.vocab_mapper = vocab_utils.VocabMapper(self.processed_data_path)
             #create source and target token id files
             processes = []
             print "Creating token id data source and target train files..."
-
             if len(text_files) == 1:
-                    num_train_files = 1
-                    text_files = self.splitSingle2Many(text_files[0], self.train_frac)
+                num_train_files = 1
+                text_files = self.splitSingle2Many(text_files[0], self.train_frac)
 
             p1 = Process(target=self.loopParseTextFiles, args=([text_files[:num_train_files]], True, self.is_discrete))
             p1.start()
@@ -131,7 +129,7 @@ class DataProcessor(object):
             with open(text_file, "r+") as f:
                 sentences = f.read().split("\n")
                 #make sure even number of senteces to pair off
-                if len(sentences) %2 != 0:
+                if len(sentences) % 2 != 0:
                     del sentences[-1]
                 for i in range(0, len(sentences), 2):
                     source_sentences = sentences[i].strip().lower()
@@ -174,6 +172,7 @@ class DataProcessor(object):
             if num_train %2 != 0:
                 num_train += 1
             num_test = len(sentences) - num_train
+            print "num train {0}, num test {1}".format(num_train, num_test)
             train_file_name = "{0}{1}train.txt".format(temp,int(time.time()))
             test_file_name = "{0}{1}test.txt".format(temp,int(time.time()))
             with open(train_file_name, "w+") as f2:
@@ -194,7 +193,8 @@ class DataProcessor(object):
     def getRawFileList(self):
         text_files = []
         for f in os.listdir(self.source_data_path):
-            text_files.append(os.path.join(self.source_data_path, f))
+            if not f.endswith("~"):
+                text_files.append(os.path.join(self.source_data_path, f))
         return text_files
 
 
@@ -215,6 +215,7 @@ class DataProcessor(object):
                 #remove outliers (really long sentences) from data
                 if len(source_sentences) >= self.MAX_SOURCE_TOKEN_LENGTH or \
                     len(target_sentences) >= self.MAX_TARGET_TOKEN_LENGTH:
+                    print "skipped {0} and {1}".format(len(source_sentences), len(target_sentences))
                     continue
                 source_sentences = " ".join([str(x) for x in source_sentences])
                 target_sentences = " ".join([str(x) for x in target_sentences])

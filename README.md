@@ -72,6 +72,7 @@ There are several options that can be employed:
 | train_frac           | int           |    percentage of data to use for training (rest is used for testing)   |
 | raw_data_dir         | int           |    raw conversation text files stored here |
 | data_dir             | int           |    Directory data processor will store train/test/vocab files          |
+| is_discrete          | boolean       |    True if your data is discrete pairs of input/output where inputs are not also outputs  |
 
 #### Tensorboard Usage
 
