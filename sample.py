@@ -16,6 +16,9 @@ import util.hyperparamutils as hyper_params
 import util.vocabutils as vocab_utils
 
 _buckets = []
+convo_hist_limit = 1
+max_source_length = 0
+max_target_length = 0
 #_buckets = [(10, 10), (50, 15), (100, 20), (200, 50)]
 
 flags = tf.app.flags
@@ -55,19 +58,24 @@ def main():
 			convo_output =  " ".join(vocab.indices2Tokens(outputs))
 
 			conversation_history.append(convo_output)
-			if len(conversation_history) >= 1:
-				conversation_history.pop(0)
 			print convo_output
 			sys.stdout.write(">")
 			sys.stdout.flush()
 			sentence = sys.stdin.readline()
-
+			conversation_history.append(sentence)
+			conversation_history = conversation_history[-convo_hist_limit:]
 
 def loadModel(session, path):
 	global _buckets
+	global max_source_length
+	global max_target_length
+	global convo_hist_limit
 	params = hyper_params.restoreHyperParams(path)
 	buckets = []
 	num_buckets = params["num_buckets"]
+	max_source_length = params["max_source_length"]
+	max_target_length = params["max_target_length"]
+	convo_hist_limit = params["conversation_history"]
 	for i in range(num_buckets):
 		buckets.append((params["bucket_{0}_target".format(i)],
 			params["bucket_{0}_target".format(i)]))
