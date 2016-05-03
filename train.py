@@ -11,6 +11,7 @@ import time
 import numpy as np
 from six.moves import xrange
 import tensorflow as tf
+from tensorflow.python.platform import gfile
 import util.hyperparamutils as hyper_params
 import util.vocabutils as vocab_utils
 import util.dataprocessor as data_utils
@@ -24,11 +25,11 @@ flags.DEFINE_float("lr_decay_factor", 0.99, "Learning rate decays by this much."
 flags.DEFINE_float("grad_clip", 5.0, "Clip gradients to this norm.")
 flags.DEFINE_float("train_frac", 0.7, "Percentage of data to use for \
 	training (rest goes into test set)")
-flags.DEFINE_integer("batch_size", 16, "Batch size to use during training.")
+flags.DEFINE_integer("batch_size", 5, "Batch size to use during training.")
 flags.DEFINE_integer("max_epoch", 6, "Maximum number of times to go over training set")
-flags.DEFINE_integer("hidden_size", 100, "Size of each model layer.")
-flags.DEFINE_integer("num_layers", 1, "Number of layers in the model.")
-flags.DEFINE_integer("vocab_size", 40000, "Vocabulary size.")
+flags.DEFINE_integer("hidden_size", 15, "Size of each model layer.")
+flags.DEFINE_integer("num_layers", 2, "Number of layers in the model.")
+flags.DEFINE_integer("vocab_size", 40000, "Max vocabulary size.")
 flags.DEFINE_integer("dropout", 0.5, "Probability of hidden inputs being removed between 0 and 1.")
 flags.DEFINE_string("data_dir", "data/", "Directory containing processed data.")
 flags.DEFINE_string("config_file", "buckets.cfg", "path to config file contraining bucket sizes")
@@ -52,8 +53,8 @@ def main():
 	config.read(FLAGS.config_file)
 
 	max_num_lines = int(config.get("max_data_sizes", "num_lines"))
-	max_target_size = int(config.get("max_data_sizes", "max_target_length"))
-	max_source_size = int(config.get("max_data_sizes", "max_source_length"))
+	max_target_length = int(config.get("max_data_sizes", "max_target_length"))
+	max_source_length = int(config.get("max_data_sizes", "max_source_length"))
 
 	if not os.path.exists(FLAGS.checkpoint_dir):
 		os.mkdir(FLAGS.checkpoint_dir)
@@ -61,7 +62,7 @@ def main():
 	print "path is {0}".format(path)
 	data_processor = data_utils.DataProcessor(FLAGS.vocab_size,
 		FLAGS.raw_data_dir,FLAGS.data_dir, FLAGS.train_frac, FLAGS.tokenizer,
-		max_num_lines, max_target_size, max_source_size, FLAGS.is_discrete)
+		max_num_lines, max_target_length, max_source_length, FLAGS.is_discrete)
 	data_processor.run()
 	#create model
 	print "Creating model with..."
@@ -88,6 +89,8 @@ def main():
 		target_train_file_path = data_processor.data_target_train
 		source_test_file_path = data_processor.data_source_test
 		target_test_file_path = data_processor.data_target_test
+		print source_train_file_path
+		print target_train_file_path
 
 		train_set = readData(source_train_file_path, target_train_file_path,
 			FLAGS.max_train_data_size)
@@ -170,7 +173,10 @@ def createModel(session, path, vocab_size):
 	model = models.chatbot.ChatbotModel(vocab_size, _buckets,
 		FLAGS.hidden_size, FLAGS.dropout, FLAGS.num_layers, FLAGS.grad_clip,
 		FLAGS.batch_size, FLAGS.learning_rate, FLAGS.lr_decay_factor)
-	hyper_params.saveHyperParameters(path, FLAGS, _buckets)
+	convo_limits = [config.getint("max_data_sizes", "max_source_length"),
+			config.getint("max_data_sizes", "max_target_length"),
+			config.getint("max_data_sizes", "num_lines")]
+	hyper_params.saveHyperParameters(path, FLAGS, _buckets, convo_limits)
 	print path
 	ckpt = tf.train.get_checkpoint_state(path)
 	if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
