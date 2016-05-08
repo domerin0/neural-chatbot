@@ -35,7 +35,7 @@ def main():
 		vocab = vocab_utils.VocabMapper(FLAGS.data_dir)
 		sys.stdout.write(">")
 		sys.stdout.flush()
-		sentence = sys.stdin.readline()
+		sentence = sys.stdin.readline().lower()
 		conversation_history = [sentence]
 		while sentence:
 			token_ids = list(reversed(vocab.tokens2Indices(" ".join(conversation_history))))
@@ -50,7 +50,7 @@ def main():
 				target_weights, bucket_id, True)
 
 			#TODO implement beam search
-			outputs = [int(np.argmax(logit, axis=1)) for logit in output_logits]
+			outputs = list(set([int(np.argmax(logit, axis=1)) for logit in output_logits]))
 
 			if vocab_utils.EOS_ID in outputs:
 				outputs = outputs[:outputs.index(vocab_utils.EOS_ID)]
@@ -61,7 +61,7 @@ def main():
 			print convo_output
 			sys.stdout.write(">")
 			sys.stdout.flush()
-			sentence = sys.stdin.readline()
+			sentence = sys.stdin.readline().lower()
 			conversation_history.append(sentence)
 			conversation_history = conversation_history[-convo_hist_limit:]
 
