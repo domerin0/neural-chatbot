@@ -245,8 +245,6 @@ class DataProcessor(object):
                 if len(source_sentences) >= self.MAX_SOURCE_TOKEN_LENGTH or \
                     len(target_sentences) >= self.MAX_TARGET_TOKEN_LENGTH:
                     print "skipped {0} and {1}".format(len(source_sentences), len(target_sentences))
-                    print source_sentences
-                    print target_sentences
                     continue
                 source_sentences = " ".join([str(x) for x in source_sentences])
                 target_sentences = " ".join([str(x) for x in target_sentences])
