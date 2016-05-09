@@ -25,15 +25,17 @@ flags.DEFINE_float("lr_decay_factor", 0.99, "Learning rate decays by this much."
 flags.DEFINE_float("grad_clip", 5.0, "Clip gradients to this norm.")
 flags.DEFINE_float("train_frac", 0.7, "Percentage of data to use for \
 	training (rest goes into test set)")
-flags.DEFINE_integer("batch_size", 5, "Batch size to use during training.")
+flags.DEFINE_integer("batch_size", 60, "Batch size to use during training.")
 flags.DEFINE_integer("max_epoch", 6, "Maximum number of times to go over training set")
-flags.DEFINE_integer("hidden_size", 15, "Size of each model layer.")
+flags.DEFINE_integer("hidden_size", 14, "Size of each model layer.")
 flags.DEFINE_integer("num_layers", 2, "Number of layers in the model.")
 flags.DEFINE_integer("vocab_size", 40000, "Max vocabulary size.")
-flags.DEFINE_integer("dropout", 0.5, "Probability of hidden inputs being removed between 0 and 1.")
+flags.DEFINE_integer("dropout", 0.3, "Probability of hidden inputs being removed between 0 and 1.")
 flags.DEFINE_string("data_dir", "data/", "Directory containing processed data.")
 flags.DEFINE_string("config_file", "buckets.cfg", "path to config file contraining bucket sizes")
 flags.DEFINE_string("raw_data_dir", "data/cornell_lines/", "Raw text data directory")
+flags.DEFINE_string("extra_discrete_data", "", "directory to discrete conversations (can be used\
+	to have continuous and discrete data in same dataset)")
 ##TODO add more than one tokenizer
 flags.DEFINE_string("tokenizer", "basic", "Choice of tokenizer, options are: basic (for now)")
 flags.DEFINE_string("checkpoint_dir", "data/checkpoints/", "Checkpoint dir")
@@ -62,7 +64,8 @@ def main():
 	print "path is {0}".format(path)
 	data_processor = data_utils.DataProcessor(FLAGS.vocab_size,
 		FLAGS.raw_data_dir,FLAGS.data_dir, FLAGS.train_frac, FLAGS.tokenizer,
-		max_num_lines, max_target_length, max_source_length, FLAGS.is_discrete)
+		max_num_lines, max_target_length, max_source_length, FLAGS.is_discrete,
+		FLAGS.extra_discrete_data)
 	data_processor.run()
 	#create model
 	print "Creating model with..."

@@ -14,7 +14,7 @@ def basic_tokenizer(sequence):
   words = []
   for space_separated_fragment in sequence.strip().split():
     words.extend(re.split(_WORD_SPLIT, space_separated_fragment))
-  return [w for w in words if w]
+  return [w.lower() for w in words if w]
 
 def character_tokenizer(sequence):
     '''

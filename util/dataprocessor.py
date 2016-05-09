@@ -9,6 +9,8 @@ TODO:
 Some very minor parallelization takes place where train and test sets are
 created in parallel. A much better parallelization can be achieved. It takes too
 much time to process the data currently.
+
+Clean up the code duplication
 '''
 
 
@@ -24,7 +26,8 @@ from math import floor
 class DataProcessor(object):
     def __init__(self, max_vocab_size, source_data_path,
     processed_data_path, train_frac, tokenizer_str,
-    num_lines=4, max_target_length=50, max_source_length=200, is_discrete=False):
+    num_lines=4, max_target_length=50, max_source_length=200, is_discrete=False,
+    extra_discrete_data=""):
         '''
         Inputs:
         max_vocab_size: max size of vocab allowed
@@ -47,7 +50,7 @@ class DataProcessor(object):
         self.max_vocab_size = max_vocab_size
         self.source_data_path = source_data_path
         self.processed_data_path = processed_data_path
-
+        self.extra_discrete_data = extra_discrete_data
         train_path = os.path.join(processed_data_path, "train/")
         test_path = os.path.join(processed_data_path, "test/")
 
@@ -79,7 +82,11 @@ class DataProcessor(object):
     def run(self):
         if not self.data_files_exist:
             print "Obtaining raw text conversation files..."
-            text_files = self.getRawFileList()
+            text_files = self.getRawFileList(self.source_data_path)
+            if not self.extra_discrete_data:
+                extra_files = self.getRawFileList(self.extra_discrete_data)
+            else:
+                extra_files = []
             # randomly shuffle order of files
             shuffle(text_files)
             num_train_files = int(self.train_frac * len(text_files))
@@ -88,10 +95,14 @@ class DataProcessor(object):
         if not self.vocab_exists:
             vocab_builder = vocab_utils.VocabBuilder(self.max_vocab_size, self.processed_data_path)
             print "Building vocab..."
+            #loop through continuous/discrete data
             for text_file in text_files:
                 with open(text_file, "r+") as f:
                     vocab_builder.growVocab(f.read())
-
+            #loopthrough extra discrete data
+            for text_file in extra_files:
+                with open(text_file, "r+") as f:
+                    vocab_builder.growVocab(f.read())
             print "Creating vocab file..."
             vocab_builder.createVocabFile()
 
@@ -100,9 +111,15 @@ class DataProcessor(object):
             #create source and target token id files
             processes = []
             print "Creating token id data source and target train files..."
+
             if len(text_files) == 1:
                 num_train_files = 1
                 text_files = self.splitSingle2Many(text_files[0], self.train_frac)
+            if len(extra_files) == 1:
+                num_extra_files = 1
+                extra_files = self.splitSingle2Many(extra_files[0], self.train_frac)
+            else:
+                num_extra_files = len(extra_files)
 
             p1 = Process(target=self.loopParseTextFiles, args=([text_files[:num_train_files]], True, self.is_discrete))
             p1.start()
@@ -112,10 +129,22 @@ class DataProcessor(object):
             p2 = Process(target=self.loopParseTextFiles, args=([text_files[num_train_files:]], False, self.is_discrete))
             p2.start()
             processes.append(p2)
+
             for p in processes:
                 if p.is_alive():
                     p.join()
 
+            if len(extra_files) > 0:
+                p2 = Process(target=self.loopParseTextFiles, args=([extra_files[num_extra_files:]], False, True))
+                p2.start()
+                processes.append(p2)
+                p1 = Process(target=self.loopParseTextFiles, args=([extra_files[:num_extra_files]], True, True))
+                p1.start()
+                processes.append(p1)
+
+            for p in processes:
+                if p.is_alive():
+                    p.join()
             print "Done data pre-processing..."
 
     def loopParseTextFiles(self, text_files, is_train, is_discrete):
@@ -190,11 +219,11 @@ class DataProcessor(object):
                     line_buffer.pop(0)
                 line_buffer.append(line)
 
-    def getRawFileList(self):
+    def getRawFileList(self, path):
         text_files = []
-        for f in os.listdir(self.source_data_path):
+        for f in os.listdir(path):
             if not f.endswith("~"):
-                text_files.append(os.path.join(self.source_data_path, f))
+                text_files.append(os.path.join(path, f))
         return text_files
 
 
