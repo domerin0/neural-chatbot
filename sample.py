@@ -35,23 +35,23 @@ flags.DEFINE_integer('static_temp', 60, 'number between 0 and 100. The lower the
 #Read in static data to fuzzy matcher.
 #Assumes static_data has text files with discrete (source, target) pairs
 #Sources are on odd lines n_i, targets are on even lines n_{i+1}
+static_sources = []
+static_targets = []
 if FLAGS.static_data:
 	if os.path.exists(FLAGS.static_data):
 		try:
 			from fuzzywuzzy import fuzz
 			from fuzzywuzzy import process
 			onlyfiles = [f for f in listdir(FLAGS.static_data) if isfile(join(FLAGS.static_data, f))]
-			static_sources = []
-			static_targets = []
 			for f in onlyfiles:
 				with open(os.path.join(FLAGS.static_data, f), 'r') as f2:
 					file_lines = f2.readlines()
 					for i in range(0, len(file_lines) - 1, 2):
-						static_sources.append(file_lines[i].lower())
-						static_targets.append(file_lines[i+1].lower())
+						static_sources.append(file_lines[i].lower().replace('\n', ''))
+						static_targets.append(file_lines[i+1].lower().replace('\n', ''))
 		except ImportError:
 			print "Package fuzzywuzzy not found"
-			print "Running sampleing without fuzzy matching..."
+			print "Running sampling without fuzzy matching..."
 	else:
 		print "Fuzzy matching data not found... double check static_data path.."
 		print "Not using fuzzy matching... Reverting to normal sampling"
@@ -97,7 +97,7 @@ def main():
 					target_weights, bucket_id, True)
 
 				#TODO implement beam search
-				outputs = list(set([int(np.argmax(logit, axis=1)) for logit in output_logits]))
+				outputs = [int(np.argmax(logit, axis=1)) for logit in output_logits]
 
 				if vocab_utils.EOS_ID in outputs:
 					outputs = outputs[:outputs.index(vocab_utils.EOS_ID)]
