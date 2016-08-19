@@ -17,12 +17,12 @@ This is based off the research in these papers: [Sutskever et al., 2014.](http:/
 
 #### Getting data
 
-To use this (currently) you will have to provide your own data. This is temporary until I add download functionality to an 
+To use this (currently) you will have to provide your own data. This is temporary until I add download functionality to an
 existing online dataset. Your data should be in a format where each succeeding line in a text file is in response to the one
 above it. You also should have one text file per conversation. In order to help you choose bucket sizes I've written a script
 to plot the sequence lengths of the source and target sequences. To use this do:
 
-`$ python util/sequencelengthplotter.py --data_dir="path/to/raw_data_files"`
+`$ python sequencelengthplotter.py --data_dir="path/to/raw_data_files"`
 
 The options for the above command are:
 
@@ -36,7 +36,7 @@ in `buckets.cfg` you can then modify the bucket values accordingly. You can add 
 
 ``bucket_name: source_length,target_length``
 
-In the same configuration file the data settings can also be changed under the [max_data_sizes] subheading. 
+In the same configuration file the data settings can also be changed under the [max_data_sizes] subheading.
 
 |  Name | Type  | Description  |
 |:--------:|:--------:|:--------:|
@@ -97,9 +97,10 @@ Summary of options below:
 
 ### Results
 
-So far using a Titan X, after about 12 hours of training, it achieves a perplexity of ~30 on a 'relatively small' network. 
-Results with human testing so far haven't been too great. I am trying to find the right set of parameters to get something 'ok', 
+So far using a Titan X, after about 12 hours of training, it achieves a perplexity of ~30 on a 'relatively small' network.
+Results with human testing so far haven't been too great. I am trying to find the right set of parameters to get something 'ok',
 that can be trained in 24 hours or less on my GPU. Results will be added here when found.
+
 
 ### Future Features
 
