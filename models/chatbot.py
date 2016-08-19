@@ -7,7 +7,11 @@ import random
 import numpy as np
 from six.moves import xrange
 import tensorflow as tf
-from tensorflow.models.rnn import rnn, rnn_cell, seq2seq
+try:
+	from tensorflow.models.rnn import rnn, rnn_cell, seq2seq
+except ImportError:
+	from tensorflow.python.ops import rnn, rnn_cell, seq2seq
+
 import util.vocabutils as vocab_utils
 
 class ChatbotModel(object):
@@ -66,16 +70,18 @@ class ChatbotModel(object):
 				cell = rnn_cell.MultiRNNCell([cell] * num_layers)
 
 		def seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
-			if tf.__version__.startswith("0.8"):
-				return tf.nn.seq2seq.embedding_attention_seq2seq(
-					encoder_inputs, decoder_inputs, cell, vocab_size,
-					vocab_size,hidden_size, output_projection=output_projection,
-					feed_previous=do_decode)
-			else:
+			version = tf.__version__
+			if version.startswith("0.6") or version.startswith("0.7"):
 				return tf.nn.seq2seq.embedding_attention_seq2seq(
 					encoder_inputs, decoder_inputs, cell, vocab_size,
 					vocab_size, output_projection=output_projection,
 					feed_previous=do_decode)
+			else:
+				return tf.nn.seq2seq.embedding_attention_seq2seq(
+					encoder_inputs, decoder_inputs, cell, vocab_size,
+					vocab_size,hidden_size, output_projection=output_projection,
+					feed_previous=do_decode)
+
 
 		# Feeds for inputs.
 		self.encoder_inputs = []
