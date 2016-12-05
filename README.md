@@ -88,6 +88,16 @@ To have a real conversation with your bot you can begin an interactive prompt by
 
 `$ python sample.py --checkpoint_dir="path/to/checkpointdirectory" --data_dir="path/to/datadirectory"`
 
+A prompt will open up something like:
+
+`>`
+
+The user can then type in to the prompt
+
+ ex/ `> Hello chatbot, how are you?`
+
+ Then hit 'enter' for the response. 
+
 Summary of options below:
 
 |  Name | Type  | Description  |
