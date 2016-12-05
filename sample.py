@@ -4,7 +4,6 @@ Code in this file is for sampling use of chatbot
 
 
 import tensorflow as tf
-from tensorflow.models.rnn import rnn, rnn_cell, seq2seq
 from tensorflow.python.platform import gfile
 import numpy as np
 import sys
