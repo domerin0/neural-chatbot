@@ -17,10 +17,11 @@ This is based off the research in these papers: [Sutskever et al., 2014.](http:/
 
 #### Getting data
 
-To use this (currently) you will have to provide your own data. This is temporary until I add download functionality to an
-existing online dataset. Your data should be in a format where each succeeding line in a text file is in response to the one
-above it. You also should have one text file per conversation. In order to help you choose bucket sizes I've written a script
-to plot the sequence lengths of the source and target sequences. To use this do:
+To use this (currently) you will have to provide your own data. \
+
+#### Data Format
+
+Each continuous conversation must be in it's own text file. Each line of the text files is a response to the previous line. The exception of course is that the first line of the text file is the conversation start. After entering your own data, you can run it with:
 
 `$ python sequencelengthplotter.py --data_dir="path/to/raw_data_files"`
 
