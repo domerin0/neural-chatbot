@@ -23,7 +23,7 @@ To use this (currently) you will have to provide your own data. \
 
 Each continuous conversation must be in it's own text file. Each line of the text files is a response to the previous line. The exception of course is that the first line of the text file is the conversation start. After entering your own data, you can run it with:
 
-`$ python sequencelengthplotter.py --data_dir="path/to/raw_data_files"`
+`$ python sequencelengthplotter.py --data_dir="path/to/text_files"`
 
 The options for the above command are:
 
