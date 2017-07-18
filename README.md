@@ -15,7 +15,11 @@ This is based off the research in these papers: [Sutskever et al., 2014.](http:/
 
 ### How to use
 
-#### Getting data
+To use your own data read Data Format, otherwise to use included [Cornell Movie Dialogues Corpur](http://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html) data:
+
+`$ python train.py`
+
+#### Data Format
 
 To use this (currently) you will have to provide your own data. This is temporary until I add download functionality to an
 existing online dataset. Your data should be in a format where each succeeding line in a text file is in response to the one
