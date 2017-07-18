@@ -4,7 +4,6 @@ Code in this file is for sampling use of chatbot
 
 
 import tensorflow as tf
-from tensorflow.models.rnn import rnn, rnn_cell, seq2seq
 from tensorflow.python.platform import gfile
 import numpy as np
 import sys
@@ -50,16 +49,16 @@ if FLAGS.static_data:
 						static_sources.append(file_lines[i].lower().replace('\n', ''))
 						static_targets.append(file_lines[i+1].lower().replace('\n', ''))
 		except ImportError:
-			print "Package fuzzywuzzy not found"
-			print "Running sampling without fuzzy matching..."
+			print("Package fuzzywuzzy not found")
+			print("Running sampling without fuzzy matching...")
 	else:
-		print "Fuzzy matching data not found... double check static_data path.."
-		print "Not using fuzzy matching... Reverting to normal sampling"
+		print("Fuzzy matching data not found... double check static_data path..")
+		print("Not using fuzzy matching... Reverting to normal sampling")
 
 def main():
 	with tf.Session() as sess:
-		model = loadModel(sess, FLAGS.checkpoint_dir)
-		print _buckets
+		model = load_model(sess, FLAGS.checkpoint_dir)
+		print(_buckets)
 		model.batch_size = 1
 		vocab = vocab_utils.VocabMapper(FLAGS.data_dir)
 		sys.stdout.write(">")
@@ -105,14 +104,14 @@ def main():
 				convo_output =  " ".join(vocab.indices2Tokens(outputs))
 
 			conversation_history.append(convo_output)
-			print convo_output
+			print(convo_output)
 			sys.stdout.write(">")
 			sys.stdout.flush()
 			sentence = sys.stdin.readline().lower()
 			conversation_history.append(sentence)
 			conversation_history = conversation_history[-convo_hist_limit:]
 
-def loadModel(session, path):
+def load_model(session, path):
 	global _buckets
 	global max_source_length
 	global max_target_length
@@ -132,11 +131,11 @@ def loadModel(session, path):
 		1, params["learning_rate"], params["lr_decay_factor"], 512, True)
 	ckpt = tf.train.get_checkpoint_state(path)
 	if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
-		print "Reading model parameters from {0}".format(ckpt.model_checkpoint_path)
+		print("Reading model parameters from {0}".format(ckpt.model_checkpoint_path))
 		model.saver.restore(session, ckpt.model_checkpoint_path)
 	else:
-		print "Double check you got the checkpoint_dir right..."
-		print "Model not found..."
+		print("Double check you got the checkpoint_dir right...")
+		print("Model not found...")
 		model = None
 	return model
 
