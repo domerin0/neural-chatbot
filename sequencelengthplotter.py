@@ -7,8 +7,6 @@ Maybe in the future I will implement a clustering algorithm to autonomously find
 bucket sizes
 '''
 
-
-
 import os
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
