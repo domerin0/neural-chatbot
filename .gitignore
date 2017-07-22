@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 data/*
+!data/cornell_lines
+!data/cornell_lines/*
 # Distribution / packaging
 .Python
 env/
