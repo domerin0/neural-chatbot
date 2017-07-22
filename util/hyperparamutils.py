@@ -19,11 +19,9 @@ def save_hyper_params(checkpoint_dir, FLAGS):
     Inputs:
     checkpoint_dir
     FLAGS:
-    conversation_limits: list of 3 ints [max_source_size, max_target_size, conversation_history]
     '''
     dic = {"vocab_size" : FLAGS.vocab_size,
-           "enc_hidden_size" : FLAGS.hidden_size,
-           "dec_hidden_size" : FLAGS.dec_hidden_size,
+           "hidden_size" : FLAGS.hidden_size,
            "dropout" : FLAGS.dropout,
            "grad_clip" : FLAGS.grad_clip,
            "num_layers" : FLAGS.num_layers,
