@@ -39,7 +39,8 @@ class DataProcessor(object):
         max_source_length: max length of source sentence
         '''
         self.MAX_SOURCE_TOKEN_LENGTH = max_source_length
-        self.MAX_TARGET_TOKEN_LENGTH = max_target_length
+        #subtract 2 for eos and go tokens
+        self.MAX_TARGET_TOKEN_LENGTH = max_target_length-2
         self.NUM_LINES = num_lines
         self.tokenizer = util.tokenizer.basic_tokenizer
         assert train_frac > 0.0 and train_frac <= 1.0, "Train frac not between 0 and 1..."
@@ -89,7 +90,7 @@ class DataProcessor(object):
             print("Building vocab...")
             #loop through data
             for text_file in text_files:
-                with open(text_file, "r+") as f:
+                with open(text_file, "rb") as f:
                     vocab_builder.grow_vocab(f.read())
             print("Creating vocab file...")
             vocab_builder.create_vocab_file()
@@ -103,11 +104,6 @@ class DataProcessor(object):
             if len(text_files) == 1:
                 num_train_files = 1
                 text_files = self.split_single_2_many(text_files[0], self.train_frac)
-            if len(extra_files) == 1:
-                num_extra_files = 1
-                extra_files = self.split_single_2_many(extra_files[0], self.train_frac)
-            else:
-                num_extra_files = len(extra_files)
 
             p1 = Process(target=self.loop_parse_text_files, args=([text_files[:num_train_files]], True))
             p1.start()
@@ -152,7 +148,7 @@ class DataProcessor(object):
             return [train_file_name, test_file_name]
 
     def parse_text_file(self, text_file, is_train):
-        with open(text_file, "r+") as f:
+        with open(text_file, "rb") as f:
             line_buffer = []
             for line in f:
                 if len(line_buffer) > self.NUM_LINES:
@@ -172,7 +168,7 @@ class DataProcessor(object):
         assert len(line_buffer) == self.NUM_LINES+1, "Num lines: {0}, length of line buffer: {1}".format(self.NUM_LINES, len(line_buffer))
         if len(line_buffer) > 0:
             for i in range(1, len(line_buffer)):
-                source_sentences = " ".join(line_buffer[:i])
+                source_sentences = b" ".join(line_buffer[:i])
                 source_sentences = source_sentences.strip()
                 target_sentences = line_buffer[i].strip()
                 #Tokenize sentences
