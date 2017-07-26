@@ -1,0 +1,2 @@
+Yes, Hal, what's up?
+It looks like we have another bad A.O. unit. My FPC shows another impending failure.

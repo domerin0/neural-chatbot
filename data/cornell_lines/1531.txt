@@ -1,0 +1,7 @@
+Excuse me, are you alright?  I noticed you talking to yourself.  I'm a nurse.  Can I be of some help?
+Uh... oh, thank you.  It's nothing.
+You don't have to thank me, I'm a nurse. This is my father, Dr. Barrington.
+Not Dr. Barrington, the world renowned agronomist?
+Yes.  He's dying <u>a-n-d</u> wants to be buried on Mercury.
+I'm familiar with your work, Doctor. You'll have to excuse me, I have to go.
+You don't have to excuse yourself.  I'm a nurse.  I understand.

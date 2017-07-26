@@ -1,0 +1,5 @@
+Your diagnostics are in error. I need weapons.
+The problem must lie in the interface between Starfleet and Borg technology. Your console may not be configured to handle the data flow.
+Can you configure it?
+I believe so.
+Do it.

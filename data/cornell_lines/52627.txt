@@ -1,0 +1,6 @@
+This is every financial transaction Ellingson conducts, yeah? From million dollar deals to the ten bucks some guy pays for gas.
+The worm eats a few cents from each transaction.
+And no one's caught it because the money isn't really gone. It's just data being shifted around.
+Right. And when the worm's ready, it zips out with the money and erases its tracks.
+Joey got cut off before he got to that part. Check it out. By this point, it's already running at, what, twice the speed as when it started.
+Right, and at this rate it ends its run in...

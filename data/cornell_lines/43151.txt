@@ -1,0 +1,2 @@
+Throw a gray scale on it; standard interpolation.
+Rotate 90 degrees counterclock wise.

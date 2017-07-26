@@ -1,0 +1,6 @@
+The Captain and Chief Engineer... they've been...they're dead.
+What is your location?
+I...I don't know...
+Is your ship equipped with Omega satellite navigation or LORAN?
+Yes...
+The LORAN has a digital printout of your latitude and longitude. Give me the coordinates and we'll be there as quick as we can.

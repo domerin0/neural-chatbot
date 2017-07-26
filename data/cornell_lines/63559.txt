@@ -1,0 +1,5 @@
+You're limping.
+I know I'm limping.  I stubbed my toe.
+Are you okay?  You want some help?
+NO.
+You are leaving, aren't you?

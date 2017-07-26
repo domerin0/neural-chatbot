@@ -1,0 +1,3 @@
+Liar.  Did you come from the city on the left, or the city on the right?
+I came from the city on the left.
+But you always lie, so you didn't come from there.  That means the city on the left must be the City of Truth.

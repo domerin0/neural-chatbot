@@ -1,0 +1,4 @@
+How many aces are left?
+Five.
+I make it six.
+Five.

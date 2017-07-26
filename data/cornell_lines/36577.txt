@@ -1,0 +1,4 @@
+Do you have a cigarette?
+I don't smoke.
+Yes, you do.
+I quit.

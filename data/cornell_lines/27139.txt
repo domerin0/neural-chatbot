@@ -1,0 +1,3 @@
+Is the word given?
+The word is given: warp speed.
+Aye...

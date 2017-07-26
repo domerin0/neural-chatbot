@@ -1,0 +1,2 @@
+Turns on Lando, the newcomer, with an ominous growl.
+Okay, okay.

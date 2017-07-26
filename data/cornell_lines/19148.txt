@@ -1,0 +1,2 @@
+The patterns were moved around, but they weren't changed.
+True.  But why?

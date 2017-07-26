@@ -1,0 +1,2 @@
+It's an experiment with flatworms and a maze. You take a flatworm and run it through the maze until he's memorized it. Then you put a new flatworm in the maze. He's clueless. Banging into walls, getting lost, whatever.
+Like Ozzy.

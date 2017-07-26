@@ -1,0 +1,3 @@
+It's just a mongoose.
+Is it dead?
+Yeah, Bwana, you got it.

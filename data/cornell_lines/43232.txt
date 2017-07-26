@@ -1,0 +1,2 @@
+Your 'faith' tells you that the distance a pendulum swings from the vertical can never get bigger, only smaller.
+That's not faith, it's physics.  The second law of thermodynamics.

@@ -1,0 +1,2 @@
+The replicators start off like assemblers, but the replicators never stabilize.
+What happens?

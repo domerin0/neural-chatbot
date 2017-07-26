@@ -1,0 +1,2 @@
+--Maker builds "K" to the "N." N is three to the K times--
+--But--

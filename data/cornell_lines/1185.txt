@@ -1,0 +1,2 @@
+What's the running time?
+Thirty-four seconds!

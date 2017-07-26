@@ -1,0 +1,6 @@
+Hello, operator services.
+Hello, operator? I'm having trouble dialing a number.
+What number please?
+555-4202.
+Just one moment.
+Thank you.

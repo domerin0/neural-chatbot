@@ -1,0 +1,11 @@
+Well, I don't know...I just tried to run this program I've been working on, and I was denied access all of a sudden. I thought maybe I'd been laid off and nobody told me.
+oh, you have Group 7 access, don't you?
+Yeah...?
+We have to close that down, just briefly. Security reasons.  Someone with that access has been tampering.
+I hope you don't think it's me. I don't even balance my checkbook on downtime.  I've got a Honeywell at home for that.
+No, no, I'm sure, but -- you understand. It should only be a couple of days. What's the thing you're working on?
+It's called Tron. It's a security program itself, actually. Monitors all the contacts between our system and other systems... If it finds anything going on that's not scheduled, it shuts it down. I sent you a memo on it.
+Mmm. Part of the Master Control Program?
+No, it'll run independently. It can watchdog the MCP as well.
+Ah. Sounds good. Well, we should have you running again in a couple of days, I hope.
+Ok

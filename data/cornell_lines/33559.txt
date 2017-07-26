@@ -1,0 +1,2 @@
+Yeah, I stripped down a motion tracker and hardwired it through to the helmet pick-ups, too.  That's also on the display.
+Sounds great.

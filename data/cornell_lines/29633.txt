@@ -1,0 +1,6 @@
+Yes -- that will reproduce the first- order terms. But what about the effect of the other terms?
+Almost negligible... With variation of parameters, this is the answer.
+How can you be so sure? Have you tested this theory?
+I find it works well enough to get me from one planet to another.  I understand you've called a meeting to study our space ship.
+As though unsure of what he's heard) Yes -- yes, I have.
+My name is Klaatu.  I spent two days at your Walter Reed Hospital. Room 309. My doctor's name was Major White -- and I had a very attractive nurse called Ruth, who's getting married next Wednesday.  If you are not interested -- or if you intend to turn me over to your Army -- we needn't waste any more time.

@@ -1,0 +1,2 @@
+I can run the image through a series of filters, try to clean it up.
+Do it.

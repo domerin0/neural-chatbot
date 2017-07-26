@@ -1,0 +1,2 @@
+The break up value is higher. It's worth 80.
+But we don't want to be greedy now, so let's let him have it at $72.

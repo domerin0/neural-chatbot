@@ -1,0 +1,4 @@
+It's telling me fail mode confirmed.  Did you see this?
+There must be some mistake. You sure you hit the right commands?
+Yes I'm sure I hit the right commands.
+Why don't you reset and run it again.  The pods check out ok.

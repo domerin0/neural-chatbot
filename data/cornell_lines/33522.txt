@@ -1,0 +1,2 @@
+Where're they headed?
+We ran a trajectory simulation.  If they carry on along that path, it's possible they'll make intra-orbital insertion.
