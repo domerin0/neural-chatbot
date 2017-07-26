@@ -9,15 +9,19 @@ This is based off the research in these papers: [Sutskever et al., 2014.](http:/
 
 ### Dependencies
 
-1. Python 2.7
-2. [TensorFlow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html)
+1. Python 3
+2. [TensorFlow 1.2](https://www.tensorflow.org/install/)
 3. (optional) matplotlib `$ pip install matplotlib`
 
 ### How to use
 
-#### Getting data
+To use your own data read Data Format, otherwise to use included [Cornell Movie Dialogues Corpur](http://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html) data:
 
-To use this (currently) you will have to provide your own data. \
+`$ python train.py`
+
+#### Data Format
+
+If you wish to provide your own data use the format below to provide your own data.
 
 #### Data Format
 
@@ -51,7 +55,7 @@ A configuration file was used because it was a mess trying to find out how to pa
 
 Once you are satisfied with bucket sizes you can then run the optimizer. This will also clean and process your raw text data. To do this:
 
-`$ python train.py`
+`$ python train.py --raw_data_dir="data/cornell_lines"`
 
 There are several options that can be employed:
 
@@ -73,15 +77,17 @@ There are several options that can be employed:
 | train_frac           | int           |    percentage of data to use for training (rest is used for testing)   |
 | raw_data_dir         | int           |    raw conversation text files stored here |
 | data_dir             | int           |    Directory data processor will store train/test/vocab files          |
-| is_discrete          | boolean       |    True if your data is discrete pairs of input/output where inputs are not also outputs  |
+| max_source_length    | int           |  How long the source sentences can be at most |
+| max_target_length    | int           |  How long the target sentences can be at most |
+| convo_limits         | int           | How far back the bot's memory should go for the conversation |
 
 #### Tensorboard Usage
 
-After training loss and perplexity graphs can be seen:
-
-`$ tensorboard --logdir=/tmp/tb_logs_chatbot/`
+Tensorboard not yet implemented.
 
 #### Sampling output
+
+** This still needs to be tested since the update to TF 1.2
 
 To have a real conversation with your bot you can begin an interactive prompt by doing:
 
@@ -108,13 +114,8 @@ Summary of options below:
 
 ### Results
 
-So far using a Titan X, after about 12 hours of training, it achieves a perplexity of ~30 on a 'relatively small' network.
-Results with human testing so far haven't been too great. I am trying to find the right set of parameters to get something 'ok',
-that can be trained in 24 hours or less on my GPU. Results will be added here when found.
-
+Coming soon.
 
 ### Future Features
 
--Automatic bucket selection <s>and making it easier to change bucket sizes</s>
-
--Automatic download and preparation of an existing conversational dataset
+- Downloadable pretrained model

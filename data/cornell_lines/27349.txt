@@ -1,0 +1,2 @@
+Spock: Condition report!
+No data, Admiral. Computers are non-functional.

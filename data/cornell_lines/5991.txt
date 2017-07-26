@@ -1,0 +1,4 @@
+That's your dog.
+It's our dog.  It belongs to us.
+There isn't any us.
+Yes there is.

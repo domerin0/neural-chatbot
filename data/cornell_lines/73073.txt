@@ -1,0 +1,2 @@
+Primary circuit is live.
+Primary trigger switch.

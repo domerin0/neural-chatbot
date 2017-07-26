@@ -3,17 +3,18 @@ from tensorflow.python.platform import gfile
 import util.tokenizer
 import re
 import os
+import special_vocab as config
 
-_PAD = b"_PAD"
-_GO = b"_GO"
-_EOS = b"_EOS"
-_UNK = b"_UNK"
-_START_VOCAB = [_PAD, _GO, _EOS, _UNK]
+_PAD = config._PAD
+_GO = config._GO
+_EOS = config._EOS
+_UNK = config._UNK
+_START_VOCAB = config._START_VOCAB
 
-PAD_ID = 0
-GO_ID = 1
-EOS_ID = 2
-UNK_ID = 3
+PAD_ID = config.PAD_ID
+EOS_ID = config.EOS_ID
+GO_ID = config.GO_ID
+UNK_ID = config.UNK_ID
 
 # Regular expressions used to tokenize.
 _WORD_SPLIT = re.compile(b"([.,!?\"':;)(])")
@@ -32,7 +33,7 @@ class VocabBuilder(object):
         self.max_vocab_size = max_vocab_size
         self.data_path = data_path
 
-    def growVocab(self, text, normalize_digits = True):
+    def grow_vocab(self, text, normalize_digits = True):
         tokens = self.tokenizer(text)
         for w in tokens:
             word = re.sub(_DIGIT_RE, b"0", w) if normalize_digits else w
@@ -41,7 +42,7 @@ class VocabBuilder(object):
             else:
                 self.vocab[word] = 1
 
-    def createVocabFile(self):
+    def create_vocab_file(self):
         vocab_list = _START_VOCAB + sorted(self.vocab, key=self.vocab.get, reverse=True)
         if len(vocab_list) > self.max_vocab_size:
             vocab_list = vocab_list[:self.max_vocab_size]
@@ -69,10 +70,10 @@ class VocabMapper(object):
         else:
             raise ValueError("Vocab file not found!")
 
-    def getVocabSize(self):
+    def get_vocab_size(self):
         return len(self.rev_vocab)
 
-    def tokens2Indices(self, text):
+    def token_2_indices(self, text):
         '''
         Inputs
         text: list of tokens (or a string)
@@ -90,7 +91,7 @@ class VocabMapper(object):
                 indices.append(UNK_ID)
         return indices
 
-    def indices2Tokens(self, indices):
+    def indices_2_tokens(self, indices):
         '''
         Inputs
         indices: a list of ints representing token indices

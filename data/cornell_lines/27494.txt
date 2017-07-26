@@ -1,0 +1,4 @@
+Full impulse.
+The manifold can't handle full impulse in the Patch, Commander.
+If we don't outrun them, the manifolds are going to be the only thing left of this ship.
+I'll be in Engineering.

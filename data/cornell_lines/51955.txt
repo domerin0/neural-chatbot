@@ -1,0 +1,4 @@
+This rectangle is subdivided into rectangles. One edge of an inner rectangle is an integer. Can you prove that one edge of the larger rectangle is an integer?
+Of course.
+Okay. How?
+It's an integer proof.

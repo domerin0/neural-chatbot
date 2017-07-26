@@ -1,0 +1,10 @@
+D'you ask the patient when did she last eat?
+Yes.
+What did she say?
+She said she had a full meal one hour before coming to the hospital.
+One hour.
+Yes.
+And did you write the numeral `one' down on the record, standing for one hour?
+I did.
+A single hour.
+Yes.

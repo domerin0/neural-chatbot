@@ -1,0 +1,4 @@
+Sure.  We've got a modem line hooked up with the data base in New York.
+Can we correlate data?  Look for specific things, like player's ages... stuff like that?
+No problem.  We're in.
+Okay.  Run a search to see if there are any players with a rating above two thousand that live on the Island.

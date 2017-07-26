@@ -1,0 +1,3 @@
+Been thinking about the push mechanism in the handler. And it came over me: it's in the wrong place.
+The wrong place?
+The answer's not in the box. It's in the band.

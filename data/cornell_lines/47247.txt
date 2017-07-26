@@ -1,0 +1,4 @@
+Currency data so we can do optimum conversions at the moment of transfer.
+Transfer.
+The eight billion. From them to us.
+Right. The eight billion.

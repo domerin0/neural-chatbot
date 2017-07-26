@@ -1,0 +1,5 @@
+Do you see the maintenance panel?
+Got it.
+Pop it open. There should be a red switch, toggle it up.
+Okay, it's on. We've got some indicator lights here.
+Okay, you're aerated. To dump the fuel you have to close the circuit for the pump. There's no switch in Avionics so you'll have to cross the wires. There should be five wires, just to your left. Do you see them?
