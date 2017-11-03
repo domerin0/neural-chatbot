@@ -83,10 +83,12 @@ class ChatbotModel(object):
 
         if decoder_mode:
             decoder = seq2seq.BeamSearchDecoder(embedding=embeddings,
-                                                start_tokens=tf.tile([GOD_ID], [batch_size]),
+                                                start_tokens=tf.tile([GO_ID], [batch_size]),
                                                 end_token=EOS_ID,
-                                                initial_state=encoder_state[0],
-                                                beam_width=2)
+                                                initial_state=encoder_state[-1],
+                                                cell=decoder_cell,
+                                                beam_width=1,
+                                                output_layer=Dense(vocab_size))
         else:
             helper = seq2seq.TrainingHelper(inputs=targets_embedding,
                                             sequence_length=self.target_lengths)
@@ -99,7 +101,7 @@ class ChatbotModel(object):
         final_outputs, final_state, final_sequence_lengths =\
                             seq2seq.dynamic_decode(decoder=decoder)
 
-        self.logits = final_outputs.rnn_output
+        self.logits = final_outputs
 
         if not decoder_mode:
             with tf.variable_scope("loss") as scope:
@@ -124,7 +126,7 @@ class ChatbotModel(object):
             capped_grads = [(tf.clip_by_value(grad, -max_gradient_norm, max_gradient_norm), var) for grad, var in gradients]
             self.train_op = optimizer.apply_gradients(capped_grads,
                                                       global_step=self.global_step)
-            self.saver = tf.train.Saver(tf.global_variables())
+        self.saver = tf.train.Saver(tf.global_variables())
 
     def step(self, sess, inputs,
              targets, source_lengths,
@@ -144,6 +146,27 @@ class ChatbotModel(object):
                      self.decoder_targets : targets,
                      self.target_lengths : target_lengths})
         return loss
+
+    def sample(self, sess, inputs):
+        '''
+        Obtain sampled logits from beamsearch decoder
+
+        Inputs:
+
+        inputs - list of sentences (source sentences)
+
+        '''
+        source_seq_lengths = []
+        source_batch_major = np.zeros(shape=[len(inputs),self.max_source_length],
+                                      dtype=np.int32)
+        for seq in inputs:
+            source_seq_lengths.append(len(seq))
+        for i, seq in enumerate(inputs):
+            for j, element in enumerate(seq):
+                source_batch_major[i, j] = element
+        return sess.run([self.logits],
+                        {self.encoder_inputs : source_batch_major,
+                         self.source_lengths : source_seq_lengths})
 
     def get_batch(self, dataset):
         '''

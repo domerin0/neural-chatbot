@@ -81,8 +81,10 @@ class VocabMapper(object):
         Returns:
         a list of ints representing token indices
         '''
-        if type(text) == type("string"):
-            text = self.tokenizer(text)
+        if isinstance(text, str):
+            b = bytearray()
+            b.extend(map(ord, text))
+            text = self.tokenizer(b)
         indices = []
         for token in text:
             if token in self.vocab:

@@ -106,13 +106,11 @@ def main():
 			train_loss += step_loss / FLAGS.steps_per_checkpoint
 			current_step += 1
 
-			# Once in a while, we save checkpoint, show statistics, and run tests.
 			if current_step % FLAGS.steps_per_checkpoint == 0:
-				# show statistics for the previous epoch.
 				print("Step {0} learning rate {1} step-time {2} training loss {3}"\
 				.format(model.global_step.eval(), round(model.learning_rate,4),
 						 round(step_time, 4), round(train_loss,4)))
-				# Decrease learning rate if no improvement was seen over last 3 times.
+
 				#if len(previous_losses) > 2 and loss > max(previous_losses[-3:]):
 				#	sess.run(model.learning_rate_decay_op)
 				previous_losses.append(train_loss)
